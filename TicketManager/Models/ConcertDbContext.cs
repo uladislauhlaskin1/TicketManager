@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TicketManager.Models
 {
-    public class ConcertDbContext : IdentityDbContext<ApplicationUser>  //DbContext
+    public class ConcertDbContext : DbContext//IdentityDbContext<IdentityUser> //DbContext
     {
         public DbSet<Band> Bands { get; set; }
         public DbSet<Concert> Concerts { get; set; }
@@ -16,7 +17,8 @@ namespace TicketManager.Models
         public DbSet<Location> Locations { get; set; }
         public DbSet<PromoCode> PromoCodes { get; set; }
 
-        public ConcertDbContext(DbContextOptions<ConcertDbContext> options) : base(options)
+        public ConcertDbContext(DbContextOptions<ConcertDbContext> options)
+            : base(options)
         {
             Database.EnsureCreated();
         }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TicketManager.Data;
 using TicketManager.Models;
 
 namespace TicketManager
@@ -28,6 +30,12 @@ namespace TicketManager
             services.AddControllersWithViews();
             services.AddDbContext<ConcertDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));
+
+            //// ======================
+
+            //// добавление сервисов Idenity
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //            .AddEntityFrameworkStores<ConcertDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +64,12 @@ namespace TicketManager
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //..........................
+
+            //app.UseAuthentication();
+
+            //.................................
         }
     }
 }
