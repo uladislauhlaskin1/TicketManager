@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagerTask.Models
 {
@@ -15,7 +16,8 @@ namespace TicketManagerTask.Models
         public DateTime Date { get; set; }
         public string Discriminator { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
-        public int TicketsCount => Tickets.Count;
+        //[NotMapped]
+        //public int TicketsCount => Tickets.Count;
         public ICollection<PromoCode> PromoCodes { get; set; }
     }
 }

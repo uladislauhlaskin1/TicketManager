@@ -32,7 +32,7 @@ namespace TicketManagerTask.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            //todo seed in another class
             SeedUsers(modelBuilder);
             SeedSingers(modelBuilder);
             SeedLocations(modelBuilder);
@@ -132,18 +132,18 @@ namespace TicketManagerTask.Data
             modelBuilder.Entity<Ticket>().HasData(
             new Ticket[]
             {
-                new Ticket { Id = id++, ConcertId = 1, CustomerInfo = " - ", Price = 5, IsReserved = false },
-                new Ticket { Id = id++, ConcertId = 1, CustomerInfo = " - ", Price = 5, IsReserved = false },
-                new Ticket { Id = id++, ConcertId = 1, CustomerInfo = " - ", Price = 5, IsReserved = false },
-                new Ticket { Id = id++, ConcertId = 2, CustomerInfo = " - ", Price = 5, IsReserved = false },
-                new Ticket { Id = id++, ConcertId = 2, CustomerInfo = " - ", Price = 5, IsReserved = false },
-                new Ticket { Id = id++, ConcertId = 2, CustomerInfo = " - ", Price = 5, IsReserved = false },
-                new Ticket { Id = id++, ConcertId = 3, CustomerInfo = " - ", Price = 5, IsReserved = false },
-                new Ticket { Id = id++, ConcertId = 3, CustomerInfo = " - ", Price = 5, IsReserved = false },
-                new Ticket { Id = id++, ConcertId = 3, CustomerInfo = " - ", Price = 5, IsReserved = false },
-                new Ticket { Id = id++, ConcertId = 4, CustomerInfo = " - ", Price = 5, IsReserved = false },
-                new Ticket { Id = id++, ConcertId = 4, CustomerInfo = " - ", Price = 5, IsReserved = false },
-                new Ticket { Id = id++, ConcertId = 4, CustomerInfo = " - ", Price = 5, IsReserved = false },
+                new Ticket { Id = id++, ConcertId = 1, IsReserved = false },
+                new Ticket { Id = id++, ConcertId = 1, IsReserved = false },
+                new Ticket { Id = id++, ConcertId = 1, IsReserved = false },
+                new Ticket { Id = id++, ConcertId = 2, IsReserved = false },
+                new Ticket { Id = id++, ConcertId = 2, IsReserved = false },
+                new Ticket { Id = id++, ConcertId = 2, IsReserved = false },
+                new Ticket { Id = id++, ConcertId = 3, IsReserved = false },
+                new Ticket { Id = id++, ConcertId = 3, IsReserved = false },
+                new Ticket { Id = id++, ConcertId = 3, IsReserved = false },
+                new Ticket { Id = id++, ConcertId = 4, IsReserved = false },
+                new Ticket { Id = id++, ConcertId = 4, IsReserved = false },
+                new Ticket { Id = id++, ConcertId = 4, IsReserved = false },
             });
         }
     }

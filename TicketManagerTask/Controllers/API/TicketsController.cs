@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketManagerTask.Data;
 using TicketManagerTask.Models;
+using TicketManagerTask.Models.Emails;
 
 namespace TicketManagerTask.Controllers.API
 {
@@ -73,6 +74,39 @@ namespace TicketManagerTask.Controllers.API
             return NoContent();
         }
 
+        [HttpGet("{ticketId}/{userId}")]
+        public async Task<IActionResult> ReserveTicket(int ticketId, string userId)
+        {
+            var ticket = await _context.Tickets.FindAsync(ticketId);
+            if (ticket.IsReserved)
+                return NoContent();
+            var user = await _context.Users.FindAsync(userId);
+            ticket.IsReserved = true;
+            ticket.UserId = user.Id;
+            ticket.User = user;
+
+            _context.Entry(ticket).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                await SendEmailConfirmation(ticket);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TicketExists(ticketId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         // POST: api/Tickets
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -103,6 +137,12 @@ namespace TicketManagerTask.Controllers.API
         private bool TicketExists(int id)
         {
             return _context.Tickets.Any(e => e.Id == id);
+        }
+
+        private async Task SendEmailConfirmation(Ticket ticket)
+        {
+            EmailSender emailSender = new EmailSender(ticket);
+            await emailSender.SendEmailAsync();
         }
     }
 }

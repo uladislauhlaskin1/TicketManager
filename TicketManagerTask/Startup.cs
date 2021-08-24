@@ -82,6 +82,11 @@ namespace TicketManagerTask
             app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();
+
+            // changes below
+            app.UseSwagger();
+            app.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger Demo API"); });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -100,9 +105,6 @@ namespace TicketManagerTask
                 }
             });
 
-            // changes below
-            app.UseSwagger();
-            app.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger Demo API"); });
         }
     }
 }
