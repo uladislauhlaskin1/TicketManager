@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TicketManager.Models
 {
-    public class ConcertDbContext : DbContext//IdentityDbContext<IdentityUser> //DbContext
+    public class ConcertDbContext : IdentityDbContext<IdentityUser> //DbContext
     {
         public DbSet<Band> Bands { get; set; }
         public DbSet<Concert> Concerts { get; set; }
@@ -25,6 +25,7 @@ namespace TicketManager.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             SeedBands(modelBuilder);
             SeedConcertTypes(modelBuilder);
             SeedLocations(modelBuilder);

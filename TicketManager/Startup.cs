@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TicketManager.Data;
 using TicketManager.Models;
 
 namespace TicketManager
@@ -29,13 +28,10 @@ namespace TicketManager
         {
             services.AddControllersWithViews();
             services.AddDbContext<ConcertDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            //services.AddDbContext<TicketManagerContext>(options =>
+            //options.UseSqlServer(Configuration.GetConnectionString("TicketManagerContextConnection")));
 
-            //// ======================
-
-            //// добавление сервисов Idenity
-            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //            .AddEntityFrameworkStores<ConcertDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +63,7 @@ namespace TicketManager
 
             //..........................
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
 
             //.................................
         }
