@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using TicketManagerTask.Models;
 
 namespace TicketManagerTask.Controllers
 {
+    //[Authorize]
     public class ConcertsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,6 +22,7 @@ namespace TicketManagerTask.Controllers
         }
 
         // GET: Concerts
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Concerts.Include(c => c.Location).Include(c => c.Singer);
@@ -27,6 +30,7 @@ namespace TicketManagerTask.Controllers
         }
 
         // GET: Concerts/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

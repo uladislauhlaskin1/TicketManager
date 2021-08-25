@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TicketManagerTask.Models;
 using TicketManagerTask.Models.ConcertTypes;
 
@@ -32,7 +29,7 @@ namespace TicketManagerTask.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //todo seed in another class
+            //todo: seed in another class
             SeedUsers(modelBuilder);
             SeedSingers(modelBuilder);
             SeedLocations(modelBuilder);
@@ -71,6 +68,15 @@ namespace TicketManagerTask.Data
                     PasswordHash = hasher.HashPassword(null, "Pa$$w0rd"),
                     EmailConfirmed = true
                 },
+                new ApplicationUser
+                {
+                    Id = "79e3f8c0-d3cb-4fc0-b688-df6a4079cbec",
+                    UserName = "test@mail.com",
+                    NormalizedUserName = "TEST@MAIL.COM",
+                    PasswordHash = hasher.HashPassword(null, "Pa$$w0rd"),
+                    EmailConfirmed = true
+                },
+
             });
         }
 
@@ -146,5 +152,6 @@ namespace TicketManagerTask.Data
                 new Ticket { Id = id++, ConcertId = 4, IsReserved = false },
             });
         }
+
     }
 }

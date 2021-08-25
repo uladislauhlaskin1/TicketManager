@@ -21,7 +21,6 @@ namespace TicketManagerTask.Controllers.API
             _context = context;
         }
 
-        // GET: api/Singers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Singer>>> GetSingers()
         {
@@ -84,7 +83,6 @@ namespace TicketManagerTask.Controllers.API
             return CreatedAtAction("GetSinger", new { id = singer.Id }, singer);
         }
 
-        // DELETE: api/Singers/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSinger(int id)
         {

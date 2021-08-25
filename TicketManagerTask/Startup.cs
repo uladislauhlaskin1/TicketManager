@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using TicketManagerTask.Data;
 using TicketManagerTask.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TicketManagerTask
 {
@@ -34,6 +35,7 @@ namespace TicketManagerTask
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>() //added manually
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
@@ -44,6 +46,14 @@ namespace TicketManagerTask
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            ////added manually
+            //services.AddAuthorization(options =>
+            //{
+            //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            //        .RequireAuthenticatedUser()
+            //        .Build();
+            //});
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

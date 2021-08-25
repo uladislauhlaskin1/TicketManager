@@ -8,8 +8,9 @@ import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
 
+import ReadSingers from './components/singers/ReadSingers';
+
 import './custom.css'
-import { Singers } from './components/Singers';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -19,9 +20,9 @@ export default class App extends Component {
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
-        <AuthorizeRoute Route path='/singers' component={Singers} />
         <AuthorizeRoute path='/fetch-data' component={FetchData} />
-        <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
+            <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
+            <Route path='/react/singers' component={ReadSingers} />
       </Layout>
     );
   }
