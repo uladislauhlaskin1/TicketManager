@@ -109,7 +109,7 @@ namespace TicketManagerTask.Data
                 new Party { Id = 3, SingerId = 1, LocationId = 2, Date = DateTime.Now.AddMonths(1), DocumentAgeConfirmation = "Passport" }
                 );
 
-            modelBuilder.Entity<ClassicMusic>().HasData(
+            modelBuilder.Entity<OpenAir>().HasData(
                 new OpenAir { Id = 4, SingerId = 3, LocationId = 1, Date = DateTime.Now.AddMonths(3), Headliner = "YOOO HEADLINER", LocationInstruction = "Turn left, turn right"}
                 );
         }

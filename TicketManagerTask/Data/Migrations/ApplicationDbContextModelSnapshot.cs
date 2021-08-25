@@ -326,13 +326,13 @@ namespace TicketManagerTask.Data.Migrations
                         {
                             Id = "ab07a835-1db0-4610-8661-380134b7d361",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e97a7f78-2f35-4555-9165-03c0aee4f0a0",
+                            ConcurrencyStamp = "83b55c08-15b0-4489-93ce-a4a932cc3766",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN@CONCERTS.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFialYN2kxpqQPFsBEvNS6yOisTqazzNpdMcK9fJIMXf+HnZ/5HLu01oVv4eZNZ83w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGz8kbY0qie0tok7GjUyzkHRx/vxa5TmynUJjXwL9BAyp2/sKVOBtf8e8FJGhnNJsQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ebbaf5c6-4301-4c0a-9b33-5489d8b1b26f",
+                            SecurityStamp = "ac73e202-98fe-4807-82a2-d0c28fb0f8d6",
                             TwoFactorEnabled = false,
                             UserName = "admin@concerts.com"
                         },
@@ -340,13 +340,13 @@ namespace TicketManagerTask.Data.Migrations
                         {
                             Id = "5c9b1c79-8cb8-4d85-b693-f8b1f6560dcd",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a91e5c5c-f212-4044-821a-333a6f807f12",
+                            ConcurrencyStamp = "f7943b4e-6c53-4eef-a2e9-746b0581d639",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "USER1@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMry3Xdix6XuZ4tWvjoNxRiELEvJxgpzjSIz1V04Wi8H5vJTg1rOlySyTYbcbp/URQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOk9JbjYI7IyUhgnl6405NTLBx+QxiWToEEF8PaX4g5mkWmF8zBcGIIIlyIVxj3l9w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "68484c7d-b322-4c58-92db-ed3f3a67fae1",
+                            SecurityStamp = "7ca1027f-dcec-4638-817c-41a76f1060d0",
                             TwoFactorEnabled = false,
                             UserName = "user1@mail.com"
                         },
@@ -354,13 +354,13 @@ namespace TicketManagerTask.Data.Migrations
                         {
                             Id = "79e3f8c0-d2cb-4fc0-b688-df6a4079cbec",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3867e8f6-6f12-429a-8bf0-df2c28daae13",
+                            ConcurrencyStamp = "f4d222f1-8fa7-48b5-9d51-3f9eaa38c580",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "USER2@CONCERTS.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI9wg9PR4ygeQLVUWCpGaco7VJCrphT4IdYP3mFEvw+KrPnyGvlEOAOZy2hmk6KfSA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIn2cel9PgIFrWAv0kogNO5loI5Fhyfod6laboxCSyJx9SHH6CFL/w3V1kMRzOZmkw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f49bcb10-565f-411e-b529-fb5f71b9a24b",
+                            SecurityStamp = "1b5e0957-c256-43b1-8afb-5caf2e2b5fe2",
                             TwoFactorEnabled = false,
                             UserName = "user2@concerts.com"
                         });
@@ -542,18 +542,17 @@ namespace TicketManagerTask.Data.Migrations
                     b.Property<int>("ConcertId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CustomerInfo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsReserved")
                         .HasColumnType("bit");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ConcertId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tickets");
 
@@ -562,97 +561,73 @@ namespace TicketManagerTask.Data.Migrations
                         {
                             Id = 1,
                             ConcertId = 1,
-                            CustomerInfo = " - ",
-                            IsReserved = false,
-                            Price = 5.0
+                            IsReserved = false
                         },
                         new
                         {
                             Id = 2,
                             ConcertId = 1,
-                            CustomerInfo = " - ",
-                            IsReserved = false,
-                            Price = 5.0
+                            IsReserved = false
                         },
                         new
                         {
                             Id = 3,
                             ConcertId = 1,
-                            CustomerInfo = " - ",
-                            IsReserved = false,
-                            Price = 5.0
+                            IsReserved = false
                         },
                         new
                         {
                             Id = 4,
                             ConcertId = 2,
-                            CustomerInfo = " - ",
-                            IsReserved = false,
-                            Price = 5.0
+                            IsReserved = false
                         },
                         new
                         {
                             Id = 5,
                             ConcertId = 2,
-                            CustomerInfo = " - ",
-                            IsReserved = false,
-                            Price = 5.0
+                            IsReserved = false
                         },
                         new
                         {
                             Id = 6,
                             ConcertId = 2,
-                            CustomerInfo = " - ",
-                            IsReserved = false,
-                            Price = 5.0
+                            IsReserved = false
                         },
                         new
                         {
                             Id = 7,
                             ConcertId = 3,
-                            CustomerInfo = " - ",
-                            IsReserved = false,
-                            Price = 5.0
+                            IsReserved = false
                         },
                         new
                         {
                             Id = 8,
                             ConcertId = 3,
-                            CustomerInfo = " - ",
-                            IsReserved = false,
-                            Price = 5.0
+                            IsReserved = false
                         },
                         new
                         {
                             Id = 9,
                             ConcertId = 3,
-                            CustomerInfo = " - ",
-                            IsReserved = false,
-                            Price = 5.0
+                            IsReserved = false
                         },
                         new
                         {
                             Id = 10,
                             ConcertId = 4,
-                            CustomerInfo = " - ",
-                            IsReserved = false,
-                            Price = 5.0
+                            IsReserved = false
                         },
                         new
                         {
                             Id = 11,
                             ConcertId = 4,
-                            CustomerInfo = " - ",
-                            IsReserved = false,
-                            Price = 5.0
+                            IsReserved = false
                         },
                         new
                         {
                             Id = 12,
                             ConcertId = 4,
-                            CustomerInfo = " - ",
-                            IsReserved = false,
-                            Price = 5.0
+                            IsReserved = false
                         });
                 });
 
@@ -675,19 +650,12 @@ namespace TicketManagerTask.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2021, 9, 24, 11, 38, 44, 594, DateTimeKind.Local).AddTicks(1465),
+                            Date = new DateTime(2021, 9, 25, 10, 57, 11, 657, DateTimeKind.Local).AddTicks(8715),
                             LocationId = 1,
                             SingerId = 1,
                             Composer = "Unknown",
                             ConcertName = "Classic#1",
                             VoiceType = "Tenor"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Date = new DateTime(2021, 11, 24, 11, 38, 44, 595, DateTimeKind.Local).AddTicks(8983),
-                            LocationId = 1,
-                            SingerId = 3
                         });
                 });
 
@@ -702,6 +670,17 @@ namespace TicketManagerTask.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("OpenAir");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 4,
+                            Date = new DateTime(2021, 11, 25, 10, 57, 11, 659, DateTimeKind.Local).AddTicks(7713),
+                            LocationId = 1,
+                            SingerId = 3,
+                            Headliner = "YOOO HEADLINER",
+                            LocationInstruction = "Turn left, turn right"
+                        });
                 });
 
             modelBuilder.Entity("TicketManagerTask.Models.ConcertTypes.Party", b =>
@@ -717,7 +696,7 @@ namespace TicketManagerTask.Data.Migrations
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2021, 10, 24, 11, 38, 44, 595, DateTimeKind.Local).AddTicks(7942),
+                            Date = new DateTime(2021, 10, 25, 10, 57, 11, 659, DateTimeKind.Local).AddTicks(6456),
                             LocationId = 2,
                             SingerId = 1,
                             DocumentAgeConfirmation = "Passport"
@@ -725,7 +704,7 @@ namespace TicketManagerTask.Data.Migrations
                         new
                         {
                             Id = 3,
-                            Date = new DateTime(2021, 9, 24, 11, 38, 44, 595, DateTimeKind.Local).AddTicks(8365),
+                            Date = new DateTime(2021, 9, 25, 10, 57, 11, 659, DateTimeKind.Local).AddTicks(7096),
                             LocationId = 2,
                             SingerId = 1,
                             DocumentAgeConfirmation = "Passport"
@@ -821,7 +800,13 @@ namespace TicketManagerTask.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TicketManagerTask.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Concert");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TicketManagerTask.Models.Concert", b =>

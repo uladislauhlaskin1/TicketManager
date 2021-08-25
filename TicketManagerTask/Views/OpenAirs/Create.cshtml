@@ -1,0 +1,52 @@
+﻿@model TicketManagerTask.Models.ConcertTypes.OpenAir
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>OpenAir</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Headliner" class="control-label"></label>
+                <input asp-for="Headliner" class="form-control" />
+                <span asp-validation-for="Headliner" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocationInstruction" class="control-label"></label>
+                <input asp-for="LocationInstruction" class="form-control" />
+                <span asp-validation-for="LocationInstruction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SingerId" class="control-label"></label>
+                <select asp-for="SingerId" class="form-control" asp-items="ViewBag.SingerId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocationId" class="control-label"></label>
+                <select asp-for="LocationId" class="form-control" asp-items="ViewBag.LocationId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

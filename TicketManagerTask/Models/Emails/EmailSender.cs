@@ -4,10 +4,6 @@ using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MimeKit;
 
-//using System.IO;
-//using System.Net;
-//using System.Net.Mail;
-//using System.Text;
 
 namespace TicketManagerTask.Models.Emails
 {
