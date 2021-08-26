@@ -33,6 +33,18 @@ namespace TicketManager.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        public async Task<IActionResult> UserTickets()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            var applicationDbContext = _context.Tickets
+               .Include(t => t.Concert)
+               .Include(t => t.User)
+               .Include(t => t.Concert.Location)
+               .Include(t => t.Concert.Singer)
+               .Where(t => t.UserId == userId);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
         [Route("/{Controller}/Type/{searchString?}")]
         public async Task<IActionResult> Index(string searchString)
         {
@@ -86,10 +98,40 @@ namespace TicketManager.Controllers
             return View(ticket);
         }
 
-        //public async Task<IActionResult> CancelReservation(int? id)
-        //{
-        //    ;
-        //}
+        public async Task<IActionResult> CancelReservation(int? id) // I know it's a bad approach, just a temporary solution
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            if (userId == null)
+            {
+                return NotFound();
+            }
+
+            var ticket = await _context.Tickets
+                .Include(t => t.Concert)
+                .Include(t => t.User)
+                .Include(t => t.Concert.Location)
+                .Include(t => t.Concert.Singer)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            if (!ticket.IsReserved)
+            {
+                return BadRequest();
+            }
+
+            ticket.IsReserved = false;
+            ticket.UserId = null;
+            await _context.SaveChangesAsync();
+            return View(ticket);
+        }
 
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
