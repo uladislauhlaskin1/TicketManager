@@ -33,6 +33,24 @@ namespace TicketManager.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        [Route("/{Controller}/Type/{searchString?}")]
+        public async Task<IActionResult> Index(string searchString)
+        {
+            var tickets = _context.Tickets
+                .Include(t => t.Concert)
+                .Include(t => t.User)
+                .Include(t => t.Concert.Location)
+                .Include(t => t.Concert.Singer)
+                .Select(t => t);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                tickets = tickets.Where(s => s.Concert.Discriminator.Contains(searchString));
+            }
+
+            return View(await tickets.ToListAsync());
+        }
+
         public async Task<IActionResult> Reserve(int? id)
         {
             if (id == null)
@@ -68,9 +86,9 @@ namespace TicketManager.Controllers
             return View(ticket);
         }
 
-        //public async Task<IActionResult> CancelReservation()
+        //public async Task<IActionResult> CancelReservation(int? id)
         //{
-
+        //    ;
         //}
 
         // GET: Tickets/Details/5
