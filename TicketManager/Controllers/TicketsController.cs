@@ -49,6 +49,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: Tickets/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Discriminator");
@@ -61,6 +62,7 @@ namespace TicketManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("Id,ConcertId,IsReserved,UserId")] Ticket ticket)
         {
             if (ModelState.IsValid)
@@ -130,6 +132,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: Tickets/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -152,6 +155,7 @@ namespace TicketManager.Controllers
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var ticket = await _context.Tickets.FindAsync(id);

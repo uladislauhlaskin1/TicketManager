@@ -47,8 +47,8 @@ namespace TicketManager.Data
                 new ApplicationUser
                 {
                     Id = "ab07a835-1db0-4610-8661-380134b7d361",
-                    UserName = "admin@concerts.com",
-                    NormalizedUserName = "ADMIN@CONCERTS.COM",
+                    UserName = "admin@mail.com",
+                    NormalizedUserName = "ADMIN@MAIL.COM",
                     PasswordHash = hasher.HashPassword(null, "123aA!"),
                     EmailConfirmed = true,
                     

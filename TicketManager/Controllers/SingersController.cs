@@ -46,6 +46,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: Singers/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             return View();

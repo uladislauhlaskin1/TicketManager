@@ -49,6 +49,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: Parties/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id");
@@ -61,6 +62,7 @@ namespace TicketManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("DocumentAgeConfirmation,Id,SingerId,LocationId,Date,Discriminator")] Party party)
         {
             if (ModelState.IsValid)
@@ -75,6 +77,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: Parties/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,6 +100,7 @@ namespace TicketManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("DocumentAgeConfirmation,Id,SingerId,LocationId,Date,Discriminator")] Party party)
         {
             if (id != party.Id)
@@ -130,6 +134,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: Parties/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -152,6 +157,7 @@ namespace TicketManager.Controllers
         // POST: Parties/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var party = await _context.Parties.FindAsync(id);

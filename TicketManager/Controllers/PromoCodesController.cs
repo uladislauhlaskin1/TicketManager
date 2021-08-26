@@ -48,6 +48,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: PromoCodes/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Discriminator");
@@ -59,6 +60,7 @@ namespace TicketManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("Id,Code,Coefficient,ConcertId")] PromoCode promoCode)
         {
             if (ModelState.IsValid)
@@ -72,6 +74,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: PromoCodes/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -93,6 +96,7 @@ namespace TicketManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Code,Coefficient,ConcertId")] PromoCode promoCode)
         {
             if (id != promoCode.Id)
@@ -125,6 +129,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: PromoCodes/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -146,6 +151,7 @@ namespace TicketManager.Controllers
         // POST: PromoCodes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var promoCode = await _context.PromoCodes.FindAsync(id);

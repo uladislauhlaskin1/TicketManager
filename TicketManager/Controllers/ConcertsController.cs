@@ -49,6 +49,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: Concerts/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id");
@@ -61,6 +62,7 @@ namespace TicketManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("Id,SingerId,LocationId,Date,Discriminator")] Concert concert)
         {
             if (ModelState.IsValid)
@@ -75,6 +77,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: Concerts/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,6 +100,7 @@ namespace TicketManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,SingerId,LocationId,Date,Discriminator")] Concert concert)
         {
             if (id != concert.Id)
@@ -130,6 +134,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: Concerts/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -152,6 +157,7 @@ namespace TicketManager.Controllers
         // POST: Concerts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var concert = await _context.Concerts.FindAsync(id);

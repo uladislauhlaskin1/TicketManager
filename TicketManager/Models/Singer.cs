@@ -7,6 +7,7 @@ namespace TicketManager.Models
         [Key]
         public int Id { get; set; }
         [Required]
+        [Display(Name = "Singer")]
         public string Name { get; set; }
     }
 }
