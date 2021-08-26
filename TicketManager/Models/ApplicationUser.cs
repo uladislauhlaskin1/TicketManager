@@ -4,5 +4,6 @@ namespace TicketManager.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        
     }
 }

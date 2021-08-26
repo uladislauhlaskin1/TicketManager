@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketManager.Data;
 
 namespace TicketManager.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210826072950_MigrationV1")]
+    partial class MigrationV1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,15 +46,6 @@ namespace TicketManager.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "7689a8c1-982e-4cd1-9425-8f156fbc9f20",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -177,10 +170,12 @@ namespace TicketManager.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -209,13 +204,6 @@ namespace TicketManager.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "ab07a835-1db0-4610-8661-380134b7d361",
-                            RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -224,10 +212,12 @@ namespace TicketManager.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -518,13 +508,13 @@ namespace TicketManager.Data.Migrations
                         {
                             Id = "ab07a835-1db0-4610-8661-380134b7d361",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ade4f8f4-3fc6-4397-a0a6-d7e9f4bb015b",
+                            ConcurrencyStamp = "6acd4474-1cff-4a41-ae57-3ea0918c9938",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN@CONCERTS.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMht5d/rv1mSXKar5Kpug6mwZ9CHzzhp0akF5npx8sMfZM+i89bE4ZqMpIWzu4LLRQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDxdknSoSe/5vy5G7Q0DQ1nnLD4RgnvF6EKOY5abo466zd59E0MHy9l9tHmmf41YcA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e8983378-ce38-43dc-94f5-d38bc0d851b9",
+                            SecurityStamp = "cf72a5af-8574-4e87-a5b1-cf0f42ab2a89",
                             TwoFactorEnabled = false,
                             UserName = "admin@concerts.com"
                         },
@@ -532,13 +522,13 @@ namespace TicketManager.Data.Migrations
                         {
                             Id = "5c9b1c79-8cb8-4d85-b693-f8b1f6560dcd",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8dfc84b7-a02f-41d4-9582-febad7616be8",
+                            ConcurrencyStamp = "20e9aa4f-bde8-4bf3-bb19-c9b74238d28c",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "USER1@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEO9SftK50OYGBEodir6vIHPt3a3ISlBtooxyAUtJJB3RqJL40U6RjUGT3IcMC5JUVw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEG066ACnO7Pe3JWrtW9/Xv7E3wVmPkPDDKzilniraysOh8gRKXSaYgEyiL/XqF5zhA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6f0af889-567d-498d-9ffe-f3ecd421c21d",
+                            SecurityStamp = "acbf103b-05c7-4f0d-b64a-5ca663f140f7",
                             TwoFactorEnabled = false,
                             UserName = "user1@mail.com"
                         },
@@ -546,13 +536,13 @@ namespace TicketManager.Data.Migrations
                         {
                             Id = "79e3f8c0-d2cb-4fc0-b688-df6a4079cbec",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "356e0fa0-6003-4737-8036-f3bd6716a662",
+                            ConcurrencyStamp = "d6a5afe4-7e6c-4850-b33d-f6da17f7e471",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "USER2@CONCERTS.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIw6GSc2+MaeJUy3oLIWDMJuQuq4+uobx9yulCONY7aAiicgSUntO0j9vxIieHEN8Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPB7NBK/JWcy09rgwGeOXWC1ix69P+ubHHfbtoxkp8Aq3n8VhQzYBvTO7hnX0c61rA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e5d2d128-5788-45c2-9298-eaf1a8942c78",
+                            SecurityStamp = "fa2d822d-a09b-47f7-bc1c-dba620e63c22",
                             TwoFactorEnabled = false,
                             UserName = "user2@concerts.com"
                         },
@@ -560,13 +550,13 @@ namespace TicketManager.Data.Migrations
                         {
                             Id = "79e3f8c0-d3cb-4fc0-b688-df6a4079cbec",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a9ee7805-9312-4ea0-91c7-1cf5bb627f97",
+                            ConcurrencyStamp = "ad96f93b-9a1a-42b0-a4f2-0ba65e7e7965",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedUserName = "TEST@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBOIlnAOzwjQOgLcAswuIzEfb83Os7XHS6vqbSm8c8GfhLqapdydurcKg3dxq3Hx1Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJY8MjXFHHKboBJdQsh879cbaz7ISt1cv3RH7LkbpU0kKRGt10mzogwPTaDt8qQyFA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "88cd7478-d559-4adc-9c9f-49b48ed783f5",
+                            SecurityStamp = "c8e1646f-0679-43a6-ace8-8b45cb87a688",
                             TwoFactorEnabled = false,
                             UserName = "test@mail.com"
                         });
@@ -594,7 +584,7 @@ namespace TicketManager.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2021, 9, 26, 11, 24, 16, 460, DateTimeKind.Local).AddTicks(854),
+                            Date = new DateTime(2021, 9, 26, 10, 29, 49, 895, DateTimeKind.Local).AddTicks(4027),
                             LocationId = 1,
                             SingerId = 1,
                             Composer = "Unknown",
@@ -621,7 +611,7 @@ namespace TicketManager.Data.Migrations
                         new
                         {
                             Id = 4,
-                            Date = new DateTime(2021, 11, 26, 11, 24, 16, 461, DateTimeKind.Local).AddTicks(8711),
+                            Date = new DateTime(2021, 11, 26, 10, 29, 49, 897, DateTimeKind.Local).AddTicks(4358),
                             LocationId = 1,
                             SingerId = 3,
                             Headliner = "YOOO HEADLINER",
@@ -643,7 +633,7 @@ namespace TicketManager.Data.Migrations
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2021, 10, 26, 11, 24, 16, 461, DateTimeKind.Local).AddTicks(7760),
+                            Date = new DateTime(2021, 10, 26, 10, 29, 49, 897, DateTimeKind.Local).AddTicks(3424),
                             LocationId = 2,
                             SingerId = 1,
                             DocumentAgeConfirmation = "Passport"
@@ -651,7 +641,7 @@ namespace TicketManager.Data.Migrations
                         new
                         {
                             Id = 3,
-                            Date = new DateTime(2021, 9, 26, 11, 24, 16, 461, DateTimeKind.Local).AddTicks(8111),
+                            Date = new DateTime(2021, 9, 26, 10, 29, 49, 897, DateTimeKind.Local).AddTicks(3784),
                             LocationId = 2,
                             SingerId = 1,
                             DocumentAgeConfirmation = "Passport"

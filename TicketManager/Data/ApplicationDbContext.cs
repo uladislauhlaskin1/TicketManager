@@ -49,8 +49,9 @@ namespace TicketManager.Data
                     Id = "ab07a835-1db0-4610-8661-380134b7d361",
                     UserName = "admin@concerts.com",
                     NormalizedUserName = "ADMIN@CONCERTS.COM",
-                    PasswordHash = hasher.HashPassword(null, "Pa$$w0rd"),
-                    EmailConfirmed = true
+                    PasswordHash = hasher.HashPassword(null, "123aA!"),
+                    EmailConfirmed = true,
+                    
                 },
                 new ApplicationUser
                 {
@@ -78,6 +79,18 @@ namespace TicketManager.Data
                 },
 
             });
+
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole { Id = "2c5e174e-3b0e-446f-86af-483d56fd7210", Name = "Administrator", NormalizedName = "ADMINISTRATOR".ToUpper()
+                });
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            new IdentityUserRole<string>
+            {
+                RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210",
+                UserId = "ab07a835-1db0-4610-8661-380134b7d361"
+            }
+        );
         }
 
         private static void SeedSingers(ModelBuilder modelBuilder)
