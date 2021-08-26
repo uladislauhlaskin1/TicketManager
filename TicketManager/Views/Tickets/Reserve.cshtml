@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject Microsoft.AspNetCore.Identity.SignInManager<IdentityUser> signInManager
+@model TicketManager.Models.Ticket
+
+
+@{
+    ViewData["Title"] = "Reserve";
+}
+
+<h1>Ticket Reservation</h1>
+
+@if (signInManager.IsSignedIn(User) && !User.IsInRole("Administrator"))
+{
+    <h5>The ticket</h5>
+    <ul>
+        <li>№ @Html.DisplayFor(model => model.Id)</li>
+        <li>Singer: @Html.DisplayFor(model => model.Concert.Singer.Name)</li>
+        <li>Date: @Html.DisplayFor(model => model.Concert.Date)</li>
+        <li>Location: @Html.DisplayFor(model => model.Concert.Location.Name)</li>
+        <li>Concert Type: @Html.DisplayFor(model => model.Concert.Discriminator)</li>
+</ul>
+
+    <h5>Was successfully reserved.</h5>
+}
+
+<p>
+    <a asp-action="Index">Back to Tickets</a>
+</p>

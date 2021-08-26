@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +25,53 @@ namespace TicketManager.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Tickets.Include(t => t.Concert).Include(t => t.User);
+            var applicationDbContext = _context.Tickets
+                .Include(t => t.Concert)
+                .Include(t => t.User)
+                .Include(t => t.Concert.Location)
+                .Include(t => t.Concert.Singer);
             return View(await applicationDbContext.ToListAsync());
         }
+
+        public async Task<IActionResult> Reserve(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            if (userId == null)
+            {
+                return NotFound();
+            }
+
+            var ticket = await _context.Tickets
+                .Include(t => t.Concert)
+                .Include(t => t.User)
+                .Include(t => t.Concert.Location)
+                .Include(t => t.Concert.Singer)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            if (ticket.IsReserved)
+            {
+                return BadRequest();
+            }
+
+            ticket.IsReserved = true;
+            ticket.UserId = userId;
+            await _context.SaveChangesAsync();
+            return View(ticket);
+        }
+
+        //public async Task<IActionResult> CancelReservation()
+        //{
+
+        //}
 
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -39,6 +84,8 @@ namespace TicketManager.Controllers
             var ticket = await _context.Tickets
                 .Include(t => t.Concert)
                 .Include(t => t.User)
+                .Include(t => t.Concert.Location)
+                .Include(t => t.Concert.Singer)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
@@ -77,6 +124,7 @@ namespace TicketManager.Controllers
         }
 
         // GET: Tickets/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -99,6 +147,7 @@ namespace TicketManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,ConcertId,IsReserved,UserId")] Ticket ticket)
         {
             if (id != ticket.Id)
