@@ -3,15 +3,18 @@
 @model IEnumerable<TicketManager.Models.Ticket>
 
 @{
-    ViewData["Title"] = "User Tickets";
+    ViewData["Title"] = "Available Tickets";
 }
 
-<h1>My Tickets</h1>
+<h1>Available Tickets</h1>
 @if (signInManager.IsSignedIn(User) && !User.IsInRole("Administrator"))
 {
     <table class="table">
         <thead>
             <tr>
+                <th>
+                    Ticked Id
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Concert)
                 </th>
@@ -35,6 +38,9 @@
                 {
                     <tr>
                         <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.Concert.Discriminator)
                         </td>
                         <td>
@@ -47,7 +53,7 @@
                             @Html.DisplayFor(modelItem => item.Concert.Date)
                         </td>
                         <td>
-                            <a asp-action="CancelReservation" asp-route-id="@item.Id">Cancel Reservation</a>
+                            <a asp-action="Reserve" asp-route-id="@item.Id">Reserve Ticket</a>
                         </td>
                     </tr>
                 }

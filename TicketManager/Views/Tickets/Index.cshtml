@@ -7,17 +7,33 @@
 }
 
 <h1>Tickets</h1>
-<form asp-controller="Tickets" asp-action="Index">
+@*<form asp-controller="Tickets" asp-action="Index">
+
     <p>
         Title: <input type="text" name="SearchString" />
         <input type="submit" value="Filter" />
     </p>
-</form>
+</form>*@
+
+@*<form asp-controller="Tickets" asp-action="Index" method="get">
+    <p>
+
+        <select asp-for="TicketTypes" asp-items="Model.Conce">
+            <option value="">All</option>
+        </select>
+
+        Title: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>*@
 
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
 {
     <p>
         <a asp-action="Create">Create New</a>
+    </p>
+    <p>
+        <a asp-action="CreateMany">Create Many Tickets</a>
     </p>
     <table class="table">
         <thead>

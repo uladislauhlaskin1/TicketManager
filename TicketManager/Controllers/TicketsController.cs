@@ -45,23 +45,62 @@ namespace TicketManager.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        [Route("/{Controller}/Type/{searchString?}")]
-        public async Task<IActionResult> Index(string searchString)
+        // GET: Tickets/ConcertTickets/5
+        [Route("/{Controller}/AvailableConcertTickets/{id?}")]
+        public async Task<IActionResult> AvailableConcertTickets(int? id)
         {
-            var tickets = _context.Tickets
-                .Include(t => t.Concert)
-                .Include(t => t.User)
-                .Include(t => t.Concert.Location)
-                .Include(t => t.Concert.Singer)
-                .Select(t => t);
-
-            if (!String.IsNullOrEmpty(searchString))
+            if (id == null)
             {
-                tickets = tickets.Where(s => s.Concert.Discriminator.Contains(searchString));
+                return NotFound();
             }
 
-            return View(await tickets.ToListAsync());
+            var concert = await _context.Concerts
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (concert == null)
+            {
+                return NotFound();
+            }
+
+            var applicationDbContext = _context.Tickets
+               .Include(t => t.Concert)
+               .Include(t => t.User)
+               .Include(t => t.Concert.Location)
+               .Include(t => t.Concert.Singer)
+               .Where(t => t.ConcertId == id)
+               .Where(t => !t.IsReserved);
+            return View(await applicationDbContext.ToListAsync());
         }
+
+        //[Route("/{Controller}/ConcertType/{type?}/Singer/{singer?}/")]
+        //public async Task<IActionResult> Index(string type, string singer)
+        //{
+        //    IQueryable<string> typesQuery = _context.Concerts.Select(c => c.Discriminator).OrderBy(c => c);
+
+        //    var tickets = _context.Tickets
+        //        .Include(t => t.Concert)
+        //        .Include(t => t.User)
+        //        .Include(t => t.Concert.Location)
+        //        .Include(t => t.Concert.Singer)
+        //        .Select(t => t);
+
+        //    if (!String.IsNullOrEmpty(singer))
+        //    {
+        //        tickets = tickets.Where(t => t.Concert.Singer.Name.Contains(singer));
+        //    }
+
+        //    if (!string.IsNullOrEmpty(type))
+        //    {
+        //        tickets = tickets.Where(t => t.Concert.Discriminator == type);
+        //    }
+
+        //    var ticketTypeVm = new TicketTypeViewModel
+        //    {
+        //        Types = new SelectList(await typesQuery.Distinct().ToListAsync()),
+        //        Tickets = await tickets.ToListAsync()
+        //    };
+
+        //    return View(ticketTypeVm);
+        //}
 
         public async Task<IActionResult> Reserve(int? id)
         {
@@ -165,8 +204,6 @@ namespace TicketManager.Controllers
         }
 
         // POST: Tickets/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
@@ -180,6 +217,24 @@ namespace TicketManager.Controllers
             }
             ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Discriminator", ticket.ConcertId);
             ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", ticket.UserId);
+            return View(ticket);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> CreateMany([Bind("Id,ConcertId,IsReserved,UserId")] Ticket ticket, int amount)
+        {
+            //if (ModelState.IsValid && amount > 0)
+            //{
+            //    for (int i = 0; i < amount; i++)
+            //    {
+            //        _context.Add(ticket);
+            //    }
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Discriminator", ticket.ConcertId);
             return View(ticket);
         }
 

@@ -3,7 +3,7 @@
 @model IEnumerable<TicketManager.Models.ConcertTypes.Party>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Parties";
 }
 
 <h1>Parties</h1>
@@ -58,8 +58,7 @@
                     }
                     else
                     {
-                        // TODO GO TO TICKET LIST
-                        <a>Tickets</a>
+                        <a asp-controller="Tickets" asp-action="AvailableConcertTickets" asp-route-id="@item.Id">Available Tickets</a>
                     }
                 </td>
             </tr>
