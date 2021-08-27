@@ -14,9 +14,7 @@
         <a asp-action="Create">Create New</a>
     </p>
 }
-@*<p>
-        <a asp-action="Create">Create New</a>
-    </p>*@
+
 <table class="table">
     <thead>
         <tr>
@@ -32,9 +30,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Discriminator)
-            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -54,9 +49,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.Discriminator)
-                </td>*@
                 <td>
                     @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
                     {
@@ -70,12 +62,19 @@
                         <a>Tickets</a>
                     }
                 </td>
-                @*<td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>*@
             </tr>
         }
     </tbody>
 </table>
+
+<div id="mapDiv" style="width:100%;height:500px;"></div>
+<script type="text/javascript">
+        window.onload = function () {
+            let locations = @Json.Serialize(Model.Select(m => m.Location).Distinct());
+            console.log(locations);
+            DisplayLocations(locations);
+        };
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?"></script>
+<script src="~/js/site.js"></script>

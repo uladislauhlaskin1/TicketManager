@@ -2,9 +2,8 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-<script src="https://maps.googleapis.com/maps/api/js?"></script>
 
-function DisplayMap(locations) {
+function DisplayLocations(locations) {
 
     //Set the Latitude and Longitude of the Map
     var cityCenter = new google.maps.LatLng(53.907466, 27.559047);

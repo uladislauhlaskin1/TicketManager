@@ -58,15 +58,15 @@ namespace TicketManager.Data
                     Id = "5c9b1c79-8cb8-4d85-b693-f8b1f6560dcd",
                     UserName = "user1@mail.com",
                     NormalizedUserName = "USER1@MAIL.COM",
-                    PasswordHash = hasher.HashPassword(null, "Pa$$w0rd"),
+                    PasswordHash = hasher.HashPassword(null, "123aA!"),
                     EmailConfirmed = true
                 },
                 new ApplicationUser
                 {
                     Id = "79e3f8c0-d2cb-4fc0-b688-df6a4079cbec",
-                    UserName = "user2@concerts.com",
-                    NormalizedUserName = "USER2@CONCERTS.COM",
-                    PasswordHash = hasher.HashPassword(null, "Pa$$w0rd"),
+                    UserName = "user2@mail.com",
+                    NormalizedUserName = "USER2@MAIL.COM",
+                    PasswordHash = hasher.HashPassword(null, "123aA!"),
                     EmailConfirmed = true
                 },
                 new ApplicationUser

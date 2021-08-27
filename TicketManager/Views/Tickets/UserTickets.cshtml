@@ -55,3 +55,15 @@
         </tbody>
     </table>
 }
+
+<div id="mapDiv" style="width:100%;height:500px;"></div>
+<script type="text/javascript">
+        window.onload = function () {
+            let locations = @Json.Serialize(Model.Select(m => m.Concert.Location).Distinct());
+            console.log(locations);
+            DisplayLocations(locations);
+        };
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?"></script>
+<script src="~/js/site.js"></script>

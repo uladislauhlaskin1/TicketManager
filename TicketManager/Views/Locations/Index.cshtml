@@ -19,16 +19,13 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Latitude)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Longitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NameRu)
             </th>
             <th></th>
         </tr>
@@ -38,16 +35,13 @@
         {
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Latitude)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Longitude)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NameRu)
                 </td>
                 <td>
                     @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
@@ -62,52 +56,14 @@
     </tbody>
 </table>
 
-@{
-    <div id="mapDiv" style="width:100%;height:500px;"></div>
-    <script type="text/javascript">
-        window.onload = function () {
-            DisplayMap();
-        };
-    </script>
-}
-
+<div id="mapDiv" style="width:100%;height:500px;"></div>
 <script type="text/javascript">
-        let points = @Json.Serialize(Model);
-        //console.log(points);
-        const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        let labelIndex = 0;
-        function DisplayMap() {
-
-            //Set the Latitude and Longitude of the Map
-            var cityCenter = new google.maps.LatLng(53.907466, 27.559047);
-
-            //Create Options or set different Characteristics of Google Map
-            var mapOptions = {
-                center: cityCenter,
-                zoom: 11,
-                minZoom: 1,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-
-            //Display the Google map in the div control with the defined Options
-            var map = new google.maps.Map(document.getElementById("mapDiv"), mapOptions);
-
-            //Setting markers
-            points.forEach(point => {
-                console.log(point);
-                console.log(point.latitude);
-                console.log(point.longitude);
-                var location = new google.maps.LatLng(point.latitude, point.longitude);
-                var marker = new google.maps.Marker({
-                    position: location,
-                    animation: google.maps.Animation.DROP,
-                    title: point.name,
-                    //label: labels[labelIndex++ % labels.length],
-                });
-                marker.setMap(map);
-            });
-        }
+        window.onload = function () {
+            let locations = @Json.Serialize(Model);
+            console.log(locations);
+            DisplayLocations(locations);
+        };
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?"></script>
 
+<script src="https://maps.googleapis.com/maps/api/js?"></script>
 <script src="~/js/site.js"></script>
