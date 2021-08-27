@@ -17,7 +17,7 @@ namespace TicketManager.Models
         public Location Location { get; set; }
         [Required]
         public DateTime Date { get; set; }
-        [Required]
+        //[Required]
         public string Discriminator { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
         public ICollection<PromoCode> PromoCodes { get; set; }
