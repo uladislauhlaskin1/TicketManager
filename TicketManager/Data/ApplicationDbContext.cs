@@ -112,8 +112,8 @@ namespace TicketManager.Data
             modelBuilder.Entity<Location>().HasData(
             new Location[]
             {
-                new Location { Id = 1, Latitude = 33.3333, Longitude = 44.4444, Name = "Unknown location"},
-                new Location { Id = 2, Latitude = 22.2222, Longitude = 55.5555, Name = "Another location"},
+                new Location { Id = 1, Latitude = 53.915048, Longitude = 27.6980264, Name = "Unknown location"},
+                new Location { Id = 2, Latitude = 53.836269, Longitude = 27.413867, Name = "Another location"},
             });
         }
 

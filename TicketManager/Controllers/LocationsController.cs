@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TicketManager.Data;
 using TicketManager.Models;
@@ -19,6 +16,11 @@ namespace TicketManager.Controllers
         public LocationsController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        public async Task<IActionResult> Map()
+        {
+            return View(await _context.Locations.ToListAsync());
         }
 
         // GET: Locations
