@@ -24,7 +24,7 @@ namespace TicketManager.Controllers
         // GET: OpenAirs
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.OpenAirs.Include(o => o.Location).Include(o => o.Singer);
+            var applicationDbContext = _context.OpenAirs.Include(o => o.Location).Include(o => o.Singer).Include(o => o.Tickets);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -39,6 +39,7 @@ namespace TicketManager.Controllers
             var openAir = await _context.OpenAirs
                 .Include(o => o.Location)
                 .Include(o => o.Singer)
+                .Include(o => o.Tickets)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (openAir == null)
             {
@@ -90,7 +91,7 @@ namespace TicketManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", openAir.LocationId);
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", openAir.LocationId);
             ViewData["SingerId"] = new SelectList(_context.Singers, "Id", "Name", openAir.SingerId);
             return View(openAir);
         }
@@ -128,7 +129,7 @@ namespace TicketManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", openAir.LocationId);
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", openAir.LocationId);
             ViewData["SingerId"] = new SelectList(_context.Singers, "Id", "Name", openAir.SingerId);
             return View(openAir);
         }

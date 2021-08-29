@@ -24,7 +24,7 @@ namespace TicketManager.Controllers
         // GET: Parties
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Parties.Include(p => p.Location).Include(p => p.Singer);
+            var applicationDbContext = _context.Parties.Include(p => p.Location).Include(p => p.Singer).Include(p => p.Tickets);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -39,6 +39,7 @@ namespace TicketManager.Controllers
             var party = await _context.Parties
                 .Include(p => p.Location)
                 .Include(p => p.Singer)
+                .Include(p => p.Tickets)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (party == null)
             {
@@ -71,7 +72,7 @@ namespace TicketManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", party.LocationId);
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", party.LocationId);
             ViewData["SingerId"] = new SelectList(_context.Singers, "Id", "Name", party.SingerId);
             return View(party);
         }
@@ -90,7 +91,7 @@ namespace TicketManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", party.LocationId);
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", party.LocationId);
             ViewData["SingerId"] = new SelectList(_context.Singers, "Id", "Name", party.SingerId);
             return View(party);
         }
@@ -128,7 +129,7 @@ namespace TicketManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", party.LocationId);
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", party.LocationId);
             ViewData["SingerId"] = new SelectList(_context.Singers, "Id", "Name", party.SingerId);
             return View(party);
         }

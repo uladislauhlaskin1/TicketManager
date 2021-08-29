@@ -24,7 +24,7 @@ namespace TicketManager.Controllers
         // GET: ClassicMusics
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ClassicMusics.Include(c => c.Location).Include(c => c.Singer);
+            var applicationDbContext = _context.ClassicMusics.Include(c => c.Location).Include(c => c.Singer).Include(c => c.Tickets);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -39,6 +39,7 @@ namespace TicketManager.Controllers
             var classicMusic = await _context.ClassicMusics
                 .Include(c => c.Location)
                 .Include(c => c.Singer)
+                .Include(c => c.Tickets)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (classicMusic == null)
             {
@@ -90,7 +91,7 @@ namespace TicketManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", classicMusic.LocationId);
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", classicMusic.LocationId);
             ViewData["SingerId"] = new SelectList(_context.Singers, "Id", "Name", classicMusic.SingerId);
             return View(classicMusic);
         }
@@ -128,7 +129,7 @@ namespace TicketManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", classicMusic.LocationId);
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", classicMusic.LocationId);
             ViewData["SingerId"] = new SelectList(_context.Singers, "Id", "Name", classicMusic.SingerId);
             return View(classicMusic);
         }

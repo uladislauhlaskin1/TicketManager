@@ -30,38 +30,44 @@
             <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
+            <th>
+                Available Tickets
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DocumentAgeConfirmation)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Singer.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Location.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    }
-                    else
-                    {
-                        <a asp-controller="Tickets" asp-action="AvailableConcertTickets" asp-route-id="@item.Id">Available Tickets</a>
-                    }
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocumentAgeConfirmation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Singer.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailableTickets)
+            </td>
+            <td>
+                @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+                else
+                {
+                    <a asp-controller="Tickets" asp-action="AvailableConcertTickets" asp-route-id="@item.Id">Available Tickets</a>
+                }
+            </td>
+        </tr>
         }
     </tbody>
 </table>

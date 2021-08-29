@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -25,6 +26,8 @@ namespace TicketManager.Models
 
         public string ConcertType()
         {
+            if (string.IsNullOrEmpty(Discriminator))
+                return "";
             string[] split = Regex.Split(Discriminator, @"(?<!^)(?=[A-Z])");
             StringBuilder s = new StringBuilder();
             foreach (string word in split)
@@ -36,9 +39,27 @@ namespace TicketManager.Models
 
         public override string ToString()
         {
-            return $"{ConcertType()} - {Singer.Name} - {Date} - {Location.Name}";
+            StringBuilder sb = new StringBuilder();
+            sb.Append(ConcertType());
+            sb.Append(" - ");
+            if (Singer != null)
+            {
+                sb.Append(Singer.Name);
+                sb.Append(" - ");
+            }
+            sb.Append(Date);
+            if (Location != null)
+            {
+                sb.Append(" - ");
+                sb.Append(Location.Name);
+            }
+            return sb.ToString();
         }
 
         public string Name => ToString();
+        public string Type => ConcertType();
+
+        public int AvailableTickets => Tickets == null ? 0 : Tickets.Where(t => !t.IsReserved).Count();
+        public int ReservedTickets => Tickets == null ? 0 : Tickets.Where(t => t.IsReserved).Count();
     }
 }

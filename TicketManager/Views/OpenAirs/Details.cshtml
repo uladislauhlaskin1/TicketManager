@@ -7,44 +7,62 @@
 <h1>Details</h1>
 
 <div>
-    <h4>OpenAir</h4>
+    <h4>Open Air</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Headliner)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Headliner)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LocationInstruction)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LocationInstruction)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Singer)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Singer.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Location)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Location.Id)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Location.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Date)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Date)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Discriminator)
+        <dt class="col-sm-2">
+            Concert Type
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Discriminator)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+        <dt class="col-sm-2">
+            All Tickets
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Tickets.Count)
+        </dd>
+        <dt class="col-sm-2">
+            Reserved Tickets
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ReservedTickets)
+        </dd>
+        <dt class="col-sm-2">
+            Available Tickets
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AvailableTickets)
         </dd>
     </dl>
 </div>
