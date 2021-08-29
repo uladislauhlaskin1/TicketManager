@@ -29,9 +29,10 @@ namespace TicketManager.Controllers
 
         public async Task<IActionResult> Index(string sortOrder)
         {
-            //ViewData["SingerSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Singer" : "";
-            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-            //ViewData["SingerSortParm"] = sortOrder == "Singer" ? "date_desc" : "Date";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "Date_desc" : "Date";
+            ViewData["SingerSortParm"] = sortOrder == "Singer" ? "Singer_desc" : "Singer";
+            ViewData["LocationSortParm"] = sortOrder == "Location" ? "Location_desc" : "Location";
+            ViewData["TypeSortParam"] = sortOrder == "Type" ? "Type_desc" : "Type";
 
             var data = _context.Concerts.Include(c => c.Location).Include(c => c.Tickets).Include(c => c.Singer).Select(d => d);
 
@@ -54,12 +55,6 @@ namespace TicketManager.Controllers
                     break;
                 case "Type_desc":
                     data = data.OrderByDescending(c => c.Discriminator);
-                    break;
-                case "AvailableTickets":
-                    data = data.OrderBy(c => c.AvailableTickets);
-                    break;
-                case "AvailableTickets_desc":
-                    data = data.OrderByDescending(c => c.AvailableTickets);
                     break;
                 case "Location":
                     data = data.OrderBy(c => c.Location.Name);
