@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace TicketManager.Models
@@ -25,12 +26,19 @@ namespace TicketManager.Models
         public string ConcertType()
         {
             string[] split = Regex.Split(Discriminator, @"(?<!^)(?=[A-Z])");
-            string s = "";
+            StringBuilder s = new StringBuilder();
             foreach (string word in split)
             {
-                s += $"{word}"; 
+                s.Append($"{word} ");
             }
-            return s;
+            return s.ToString();
         }
+
+        public override string ToString()
+        {
+            return $"{ConcertType()} - {Singer.Name} - {Date} - {Location.Name}";
+        }
+
+        public string Name => ToString();
     }
 }

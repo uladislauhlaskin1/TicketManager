@@ -198,8 +198,8 @@ namespace TicketManager.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
-            ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Discriminator");
-            ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id");
+            var concerts = _context.Concerts.Include(c => c.Location).Include(c => c.Singer).Where(c => c.Date >= DateTime.Now).OrderBy(c => c.Date);
+            ViewData["ConcertId"] = new SelectList(concerts, "Id", "Name");
             return View();
         }
 
@@ -220,21 +220,29 @@ namespace TicketManager.Controllers
             return View(ticket);
         }
 
+        [Authorize(Roles = "Administrator")]
+        //[Route("/{Controller}/ConcertType/{type?}/Singer/{singer?}/")]
+        public IActionResult CreateMany(int? amount)
+        {
+            var concerts = _context.Concerts.Include(c => c.Location).Include(c => c.Singer).Where(c => c.Date >= DateTime.Now).OrderBy(c => c.Date);
+            ViewData["ConcertId"] = new SelectList(concerts, "Id", "Name");
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateMany([Bind("Id,ConcertId,IsReserved,UserId")] Ticket ticket, int amount)
         {
-            //if (ModelState.IsValid && amount > 0)
-            //{
-            //    for (int i = 0; i < amount; i++)
-            //    {
-            //        _context.Add(ticket);
-            //    }
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Discriminator", ticket.ConcertId);
+            if (ModelState.IsValid)
+            {
+                for (int i = 0; i < amount; i++)
+                    _context.Add(ticket);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Discriminator", ticket.ConcertId);
+            ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", ticket.UserId);
             return View(ticket);
         }
 

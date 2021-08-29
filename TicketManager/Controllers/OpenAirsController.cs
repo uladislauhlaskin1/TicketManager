@@ -52,7 +52,7 @@ namespace TicketManager.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id");
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name");
             ViewData["SingerId"] = new SelectList(_context.Singers, "Id", "Name");
             return View();
         }
