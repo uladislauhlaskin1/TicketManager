@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,10 +21,57 @@ namespace TicketManager.Controllers
         }
 
         // GET: Concerts
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    var applicationDbContext = _context.Concerts.Include(c => c.Location).Include(c => c.Tickets).Include(c => c.Singer);
+        //    return View(await applicationDbContext.ToListAsync());
+        //}
+
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var applicationDbContext = _context.Concerts.Include(c => c.Location).Include(c => c.Tickets).Include(c => c.Singer);
-            return View(await applicationDbContext.ToListAsync());
+            //ViewData["SingerSortParm"] = String.IsNullOrEmpty(sortOrder) ? "Singer" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            //ViewData["SingerSortParm"] = sortOrder == "Singer" ? "date_desc" : "Date";
+
+            var data = _context.Concerts.Include(c => c.Location).Include(c => c.Tickets).Include(c => c.Singer).Select(d => d);
+
+            switch (sortOrder)
+            {
+                case "Singer":
+                    data = data.OrderBy(c => c.Singer.Name);
+                    break;
+                case "Singer_desc":
+                    data = data.OrderByDescending(c => c.Singer.Name);
+                    break;
+                case "Date":
+                    data = data.OrderBy(c => c.Date);
+                    break;
+                case "Date_desc":
+                    data = data.OrderByDescending(s => s.Date);
+                    break;
+                case "Type":
+                    data = data.OrderBy(c => c.Discriminator);
+                    break;
+                case "Type_desc":
+                    data = data.OrderByDescending(c => c.Discriminator);
+                    break;
+                case "AvailableTickets":
+                    data = data.OrderBy(c => c.AvailableTickets);
+                    break;
+                case "AvailableTickets_desc":
+                    data = data.OrderByDescending(c => c.AvailableTickets);
+                    break;
+                case "Location":
+                    data = data.OrderBy(c => c.Location.Name);
+                    break;
+                case "Location_desc":
+                    data = data.OrderByDescending(c => c.Location.Name);
+                    break;
+                default:
+                    data = data.OrderBy(s => s.Singer.Name);
+                    break;
+            }
+            return View(await data.AsNoTracking().ToListAsync());
         }
 
         // GET: Concerts/Details/5
