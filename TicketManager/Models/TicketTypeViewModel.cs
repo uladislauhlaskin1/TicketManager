@@ -5,9 +5,9 @@ namespace TicketManager.Models
 {
     public class TicketTypeViewModel
     {
-        public List<Ticket> Tickets { get; set; }
-        public SelectList Types { get; set; }
-        public string Type { get; set; }
+        public IList<Ticket> Tickets { get; set; }
+        public SelectList Concerts { get; set; }
         public string Singer { get; set; }
+        public int? ConcertId { get; set; }
     }
 }

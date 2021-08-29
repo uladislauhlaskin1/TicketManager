@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject Microsoft.AspNetCore.Identity.SignInManager<IdentityUser> signInManager
+@model TicketManager.Models.TicketTypeViewModel
+
+@{
+    ViewData["Title"] = "Tickets";
+}
+
+<h1>Tickets</h1>
+
+<form asp-controller="Tickets" asp-action="IndexFilter" method="get">
+    <p>
+        <div class="form-group">
+            <label asp-for="ConcertId" class="control-label"></label>
+            <select asp-for="ConcertId" asp-items="Model.Concerts">
+                <option value="">All</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Singer" class="control-label"></label>
+            <input type="text" asp-for="Singer" />
+        </div>
+
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Tickets[0].Concert.Singer.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tickets[0].Concert.Location.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tickets[0].Concert.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tickets[0].Concert.Discriminator)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Tickets)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Concert.Singer.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Concert.Location.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Concert.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Concert.Discriminator)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

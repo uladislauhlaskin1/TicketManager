@@ -33,6 +33,36 @@ namespace TicketManager.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        public async Task<IActionResult> IndexFilter(int? concertId, string singer)
+        {
+            IQueryable<int> concertsQuery = _context.Concerts.OrderBy(c => c.Discriminator).ThenBy(c => c.Singer.Name).ThenBy(c => c.Date).Select(c => c.Id).Distinct();
+
+            var tickets = _context.Tickets
+                .Include(t => t.Concert)
+                .Include(t => t.User)
+                .Include(t => t.Concert.Location)
+                .Include(t => t.Concert.Singer)
+                .Select(t => t);
+
+            if (!String.IsNullOrEmpty(singer))
+            {
+                tickets = tickets.Where(t => t.Concert.Singer.Name.Contains(singer));
+            }
+
+            if (concertId != null)
+            {
+                tickets = tickets.Where(t => t.Concert.Id == concertId);
+            }
+
+            var ticketTypeVm = new TicketTypeViewModel
+            {
+                Concerts = new SelectList(await concertsQuery.ToListAsync()),
+                Tickets = await tickets.ToListAsync()
+            };
+
+            return View(ticketTypeVm);
+        }
+
         public async Task<IActionResult> UserTickets()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
@@ -70,37 +100,6 @@ namespace TicketManager.Controllers
                .Where(t => !t.IsReserved);
             return View(await applicationDbContext.ToListAsync());
         }
-
-        //[Route("/{Controller}/ConcertType/{type?}/Singer/{singer?}/")]
-        //public async Task<IActionResult> Index(string type, string singer)
-        //{
-        //    IQueryable<string> typesQuery = _context.Concerts.Select(c => c.Discriminator).OrderBy(c => c);
-
-        //    var tickets = _context.Tickets
-        //        .Include(t => t.Concert)
-        //        .Include(t => t.User)
-        //        .Include(t => t.Concert.Location)
-        //        .Include(t => t.Concert.Singer)
-        //        .Select(t => t);
-
-        //    if (!String.IsNullOrEmpty(singer))
-        //    {
-        //        tickets = tickets.Where(t => t.Concert.Singer.Name.Contains(singer));
-        //    }
-
-        //    if (!string.IsNullOrEmpty(type))
-        //    {
-        //        tickets = tickets.Where(t => t.Concert.Discriminator == type);
-        //    }
-
-        //    var ticketTypeVm = new TicketTypeViewModel
-        //    {
-        //        Types = new SelectList(await typesQuery.Distinct().ToListAsync()),
-        //        Tickets = await tickets.ToListAsync()
-        //    };
-
-        //    return View(ticketTypeVm);
-        //}
 
         public async Task<IActionResult> Reserve(int? id)
         {
@@ -260,8 +259,8 @@ namespace TicketManager.Controllers
             {
                 return NotFound();
             }
-            ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Discriminator", ticket.ConcertId);
-            ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", ticket.UserId);
+            ViewData["ConcertId"] = new SelectList(_context.Concerts.Include(c => c.Singer).Include(c => c.Location), "Id", "Name", ticket.ConcertId);
+            ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "UserName", ticket.UserId);
             return View(ticket);
         }
 
@@ -298,8 +297,8 @@ namespace TicketManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Discriminator", ticket.ConcertId);
-            ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", ticket.UserId);
+            ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Name", ticket.ConcertId);
+            ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "UserName", ticket.UserId);
             return View(ticket);
         }
 
@@ -315,6 +314,8 @@ namespace TicketManager.Controllers
             var ticket = await _context.Tickets
                 .Include(t => t.Concert)
                 .Include(t => t.User)
+                .Include(t => t.Concert.Location)
+                .Include(t => t.Concert.Singer)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {

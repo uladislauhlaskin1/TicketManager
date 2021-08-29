@@ -1,6 +1,80 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@*@using Microsoft.AspNetCore.Identity
+    @inject Microsoft.AspNetCore.Identity.SignInManager<IdentityUser> signInManager
+    @model IEnumerable<TicketManager.Models.Concert>
+
+    @{
+        ViewData["Title"] = "Concerts";
+    }
+
+    <h1>All Concerts</h1>
+
+    @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+    {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    }
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["SingerSortParm"]">@Html.DisplayNameFor(model => model.Singer)</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["LocationSortParm"]">@Html.DisplayNameFor(model => model.Location)</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.Date)</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["TypeSortParam"]">Concert Type</a>
+                </th>
+                <th>
+                    Available Tickets
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Singer.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AvailableTickets)
+                </td>
+                <td>
+                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Tickets" asp-action="AvailableConcertTickets" asp-route-id="@item.Id">Available Tickets</a>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>*@
+
+@using Microsoft.AspNetCore.Identity
 @inject Microsoft.AspNetCore.Identity.SignInManager<IdentityUser> signInManager
-@model IEnumerable<TicketManager.Models.Concert>
+@model TicketManager.Models.ConcertTypeViewModel
 
 @{
     ViewData["Title"] = "Concerts";
@@ -15,23 +89,31 @@
     </p>
 }
 
+<form asp-controller="Concerts" asp-action="Index" method="get">
+    <p>
+
+        <select asp-for="ConcertType" asp-items="Model.ConcertTypes">
+            <option value="">All</option>
+        </select>
+
+        Singer: <input type="text" asp-for="Singer" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @*@Html.DisplayNameFor(model => model.Singer)*@
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["SingerSortParm"]">@Html.DisplayNameFor(model => model.Singer)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SingerSortParm"]">@Html.DisplayNameFor(model => model.Concerts[0].Singer.Name)</a>
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.Location)*@
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["LocationSortParm"]">@Html.DisplayNameFor(model => model.Location)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["LocationSortParm"]">@Html.DisplayNameFor(model => model.Concerts[0].Location)</a>
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.Date)*@
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.Date)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.Concerts[0].Date)</a>
             </th>
             <th>
-                @*Concert Type*@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["TypeSortParam"]">Concert Type</a>
             </th>
             <th>
@@ -41,45 +123,46 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Concerts)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Singer.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AvailableTickets)
-            </td>
-            <td>
-                @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                }
-                else
-                {
-                    <a asp-controller="Tickets" asp-action="AvailableConcertTickets" asp-route-id="@item.Id">Available Tickets</a>
-                }
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Singer.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AvailableTickets)
+                </td>
+                <td>
+                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Tickets" asp-action="AvailableConcertTickets" asp-route-id="@item.Id">Available Tickets</a>
+                    }
+                </td>
+            </tr>
         }
     </tbody>
 </table>
 
+
 <div id="mapDiv" style="width:100%;height:500px;"></div>
 <script type="text/javascript">
         window.onload = function () {
-            let locations = @Json.Serialize(Model.Select(m => m.Location).Distinct());
+            let locations = @Json.Serialize(Model.Concerts.Select(m => m.Location).Distinct());
             console.log(locations);
             DisplayLocations(locations);
         };

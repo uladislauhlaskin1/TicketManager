@@ -27,8 +27,10 @@ namespace TicketManager.Controllers
         //    return View(await applicationDbContext.ToListAsync());
         //}
 
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string concertType, string singer, string sortOrder)
         {
+            IQueryable<string> typesQuery = _context.Concerts.Select(c => c.Discriminator).OrderBy(c => c).Distinct();
+
             ViewData["DateSortParm"] = sortOrder == "Date" ? "Date_desc" : "Date";
             ViewData["SingerSortParm"] = sortOrder == "Singer" ? "Singer_desc" : "Singer";
             ViewData["LocationSortParm"] = sortOrder == "Location" ? "Location_desc" : "Location";
@@ -66,7 +68,25 @@ namespace TicketManager.Controllers
                     data = data.OrderBy(s => s.Singer.Name);
                     break;
             }
-            return View(await data.AsNoTracking().ToListAsync());
+
+            //return View(await data.AsNoTracking().ToListAsync());
+            if (!String.IsNullOrEmpty(singer))
+            {
+                data = data.Where(t => t.Singer.Name.Contains(singer));
+            }
+
+            if (!string.IsNullOrEmpty(concertType))
+            {
+                data = data.Where(t => t.Discriminator == concertType);
+            }
+
+            var concertTypeVm = new ConcertTypeViewModel
+            {
+                ConcertTypes = new SelectList(await typesQuery.ToListAsync()),
+                Concerts = await data.ToListAsync()
+            };
+
+            return View(concertTypeVm);
         }
 
         // GET: Concerts/Details/5

@@ -3,29 +3,29 @@
 @model IEnumerable<TicketManager.Models.Ticket>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Tickets";
 }
 
 <h1>Tickets</h1>
 @*<form asp-controller="Tickets" asp-action="Index">
 
-    <p>
-        Title: <input type="text" name="SearchString" />
-        <input type="submit" value="Filter" />
-    </p>
-</form>*@
+        <p>
+            Title: <input type="text" name="SearchString" />
+            <input type="submit" value="Filter" />
+        </p>
+    </form>*@
 
 @*<form asp-controller="Tickets" asp-action="Index" method="get">
-    <p>
+        <p>
 
-        <select asp-for="TicketTypes" asp-items="Model.Conce">
-            <option value="">All</option>
-        </select>
+            <select asp-for="TicketTypes" asp-items="Model.Conce">
+                <option value="">All</option>
+            </select>
 
-        Title: <input type="text" asp-for="SearchString" />
-        <input type="submit" value="Filter" />
-    </p>
-</form>*@
+            Title: <input type="text" asp-for="SearchString" />
+            <input type="submit" value="Filter" />
+        </p>
+    </form>*@
 
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
 {
@@ -39,7 +39,7 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Concert)
+                    @Html.DisplayNameFor(model => model.Concert.Type)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Concert.Location.Name)
@@ -64,7 +64,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Concert.Discriminator)
+                        @Html.DisplayFor(modelItem => item.Concert.Type)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Concert.Location.Name)
