@@ -244,9 +244,26 @@ namespace TicketManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Discriminator", ticket.ConcertId);
-            ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", ticket.UserId);
+            ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Name", ticket.ConcertId);
+            ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "UserName", ticket.UserId);
             return View(ticket);
+
+            //List<Ticket> toAdd = new List<Ticket>();
+            //if (ModelState.IsValid)
+            //{
+            //    toAdd.Add(ticket);
+            //    toAdd.Add(ticket);
+            //    toAdd.Add(ticket);
+            //    toAdd.Add(ticket);
+            //    toAdd.Add(ticket);
+
+            //    await _context.AddRangeAsync(toAdd);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Name", ticket.ConcertId);
+            //ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "UserName", ticket.UserId);
+            //return View(toAdd);
         }
 
         [Authorize(Roles = "Administrator")]
@@ -270,8 +287,8 @@ namespace TicketManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Discriminator", ticket.ConcertId);
-            ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id", ticket.UserId);
+            ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Name", ticket.ConcertId);
+            ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "UserName", ticket.UserId);
             return View(ticket);
         }
 
