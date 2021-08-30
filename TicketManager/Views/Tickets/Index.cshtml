@@ -220,7 +220,7 @@ else
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Concert)
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Concert.Type)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Concert.Location.Name)
@@ -243,7 +243,7 @@ else
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Concert.Discriminator)
+                            @Html.DisplayFor(modelItem => item.Concert.Type)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Concert.Location.Name)
