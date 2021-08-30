@@ -8,6 +8,7 @@ namespace TicketManager.Models
         public IList<Ticket> Tickets { get; set; }
         public SelectList Concerts { get; set; }
         public string Singer { get; set; }
+        public string ConcertName { get; set; }
         public int? ConcertId { get; set; }
     }
 }

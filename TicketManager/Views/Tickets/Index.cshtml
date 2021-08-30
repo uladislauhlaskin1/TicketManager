@@ -1,31 +1,154 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@*@using Microsoft.AspNetCore.Identity
+    @inject Microsoft.AspNetCore.Identity.SignInManager<IdentityUser> signInManager
+    @model IEnumerable<TicketManager.Models.Ticket>
+
+    @{
+        ViewData["Title"] = "Tickets";
+    }
+
+    <h1>Tickets</h1>
+
+    @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+    {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+        <p>
+            <a asp-action="CreateMany">Create Many Tickets</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Concert.Type)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Concert.Location.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Concert.Singer.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Concert.Date)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsReserved)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.User.UserName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Concert.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Concert.Location.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Concert.Singer.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Concert.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsReserved)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.UserName)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Concert)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Concert.Location.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Concert.Singer.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Concert.Date)
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var unreservedTickets = Model.Where(m => !m.IsReserved);
+                    @foreach (var item in unreservedTickets)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Concert.Discriminator)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Concert.Location.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Concert.Singer.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Concert.Date)
+                            </td>
+                            <td>
+                                <a asp-action="Reserve" asp-route-id="@item.Id">Reserve Ticket</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }*@
+
+@using Microsoft.AspNetCore.Identity
 @inject Microsoft.AspNetCore.Identity.SignInManager<IdentityUser> signInManager
-@model IEnumerable<TicketManager.Models.Ticket>
+@model TicketManager.Models.TicketTypeViewModel
 
 @{
     ViewData["Title"] = "Tickets";
 }
 
 <h1>Tickets</h1>
-@*<form asp-controller="Tickets" asp-action="Index">
 
-        <p>
-            Title: <input type="text" name="SearchString" />
-            <input type="submit" value="Filter" />
-        </p>
-    </form>*@
-
-@*<form asp-controller="Tickets" asp-action="Index" method="get">
-        <p>
-
-            <select asp-for="TicketTypes" asp-items="Model.Conce">
+<form asp-controller="Tickets" asp-action="IndexFilter" method="get">
+    <p>
+        <div class="form-group">
+            <label asp-for="ConcertId" class="control-label">Concert</label>
+            <select asp-for="ConcertId" asp-items="Model.Concerts">
                 <option value="">All</option>
             </select>
+        </div>
 
-            Title: <input type="text" asp-for="SearchString" />
-            <input type="submit" value="Filter" />
-        </p>
-    </form>*@
+        <div class="form-group">
+            <label asp-for="Singer" class="control-label"></label>
+            <input type="text" asp-for="Singer" />
+        </div>
+
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 
 @if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
 {
@@ -39,28 +162,28 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Concert.Type)
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Concert.Type)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Concert.Location.Name)
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Concert.Location.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Concert.Singer.Name)
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Concert.Singer.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Concert.Date)
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Concert.Date)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.IsReserved)
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().IsReserved)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.User.UserName)
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().User.UserName)
                 </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.Tickets)
             {
                 <tr>
                     <td>
@@ -97,16 +220,16 @@ else
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Concert)
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Concert)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Concert.Location.Name)
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Concert.Location.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Concert.Singer.Name)
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Concert.Singer.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Concert.Date)
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Concert.Date)
                 </th>
                 <th>
                     Action
@@ -115,7 +238,7 @@ else
         </thead>
         <tbody>
             @{
-                var unreservedTickets = Model.Where(m => !m.IsReserved);
+                var unreservedTickets = Model.Tickets.Where(m => !m.IsReserved);
                 @foreach (var item in unreservedTickets)
                 {
                     <tr>
@@ -140,4 +263,3 @@ else
         </tbody>
     </table>
 }
-

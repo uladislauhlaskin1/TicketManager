@@ -11,7 +11,7 @@
 <form asp-controller="Tickets" asp-action="IndexFilter" method="get">
     <p>
         <div class="form-group">
-            <label asp-for="ConcertId" class="control-label"></label>
+            <label asp-for="ConcertId" class="control-label">Concert</label>
             <select asp-for="ConcertId" asp-items="Model.Concerts">
                 <option value="">All</option>
             </select>

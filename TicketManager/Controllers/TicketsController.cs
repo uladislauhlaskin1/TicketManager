@@ -23,19 +23,19 @@ namespace TicketManager.Controllers
         }
 
         // GET: Tickets
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Tickets
-                .Include(t => t.Concert)
-                .Include(t => t.User)
-                .Include(t => t.Concert.Location)
-                .Include(t => t.Concert.Singer);
-            return View(await applicationDbContext.ToListAsync());
-        }
+        //public async Task<IActionResult> Index()
+        //{
+        //    var applicationDbContext = _context.Tickets
+        //        .Include(t => t.Concert)
+        //        .Include(t => t.User)
+        //        .Include(t => t.Concert.Location)
+        //        .Include(t => t.Concert.Singer);
+        //    return View(await applicationDbContext.ToListAsync());
+        //}
 
-        public async Task<IActionResult> IndexFilter(int? concertId, string singer)
+        public async Task<IActionResult> Index(int? concertId, string singer)
         {
-            IQueryable<int> concertsQuery = _context.Concerts.OrderBy(c => c.Discriminator).ThenBy(c => c.Singer.Name).ThenBy(c => c.Date).Select(c => c.Id).Distinct();
+            IQueryable<Concert> concertsQuery = _context.Concerts.OrderBy(c => c.Discriminator).ThenBy(c => c.Singer.Name).ThenBy(c => c.Date).Distinct();
 
             var tickets = _context.Tickets
                 .Include(t => t.Concert)
@@ -56,7 +56,37 @@ namespace TicketManager.Controllers
 
             var ticketTypeVm = new TicketTypeViewModel
             {
-                Concerts = new SelectList(await concertsQuery.ToListAsync()),
+                Concerts = new SelectList(await concertsQuery.ToListAsync(), "Id", "Name"),
+                Tickets = await tickets.ToListAsync()
+            };
+
+            return View(ticketTypeVm);
+        }
+
+        public async Task<IActionResult> IndexFilter(int? concertId, string singer)
+        {
+            IQueryable<Concert> concertsQuery = _context.Concerts.OrderBy(c => c.Discriminator).ThenBy(c => c.Singer.Name).ThenBy(c => c.Date).Distinct();
+
+            var tickets = _context.Tickets
+                .Include(t => t.Concert)
+                .Include(t => t.User)
+                .Include(t => t.Concert.Location)
+                .Include(t => t.Concert.Singer)
+                .Select(t => t);
+
+            if (!String.IsNullOrEmpty(singer))
+            {
+                tickets = tickets.Where(t => t.Concert.Singer.Name.Contains(singer));
+            }
+
+            if (concertId != null)
+            {
+                tickets = tickets.Where(t => t.Concert.Id == concertId);
+            }
+
+            var ticketTypeVm = new TicketTypeViewModel
+            {
+                Concerts = new SelectList(await concertsQuery.ToListAsync(), "Id", "Name"),
                 Tickets = await tickets.ToListAsync()
             };
 
