@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -125,12 +126,21 @@ namespace TicketManager.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Create([Bind("Id,SingerId,LocationId,Date,Discriminator")] Concert concert)
+        public async Task<IActionResult> Create([Bind("Id,SingerId,LocationId,Date,Discriminator,TicketAmount")] Concert concert)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(concert);
                 await _context.SaveChangesAsync();
+
+                List<Ticket> tickets = new();
+                for (int i = 0; i < concert.TicketAmount; i++)
+                {
+                    tickets.Add(new Ticket() { ConcertId = concert.Id });
+                }
+                concert.Tickets = tickets;
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", concert.LocationId);

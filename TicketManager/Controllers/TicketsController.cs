@@ -227,7 +227,8 @@ namespace TicketManager.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
-            var concerts = _context.Concerts.Include(c => c.Location).Include(c => c.Singer).Where(c => c.Date >= DateTime.Now).OrderBy(c => c.Date);
+            var concerts = _context.Concerts.Include(c => c.Location).Include(c => c.Singer)
+                .Where(c => c.Date >= DateTime.Now).OrderBy(c => c.Discriminator).ThenBy(c => c.Singer.Name);
             ViewData["ConcertId"] = new SelectList(concerts, "Id", "Name");
             return View();
         }
@@ -248,7 +249,7 @@ namespace TicketManager.Controllers
             ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "UserName", ticket.UserId);
             return View(ticket);
 
-            //List<Ticket> toAdd = new List<Ticket>();
+            //List<Ticket> toAdd = new();
             //if (ModelState.IsValid)
             //{
             //    toAdd.Add(ticket);
@@ -282,8 +283,7 @@ namespace TicketManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                for (int i = 0; i < amount; i++)
-                    _context.Add(ticket);
+                _context.Add(ticket);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
