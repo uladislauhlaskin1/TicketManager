@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TicketManager.Data;
 using TicketManager.Models;
+using TicketManager.Models.Emails;
 
 namespace TicketManager.Controllers
 {
@@ -163,6 +164,11 @@ namespace TicketManager.Controllers
             ticket.IsReserved = true;
             ticket.UserId = userId;
             await _context.SaveChangesAsync();
+
+            var email = _context.Users.FirstOrDefault(u => u.Id == userId).Email;
+            EmailSender emailSender = new EmailSender(ticket, email);
+            await emailSender.SendEmailAsync();
+
             return View(ticket);
         }
 

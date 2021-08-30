@@ -8,16 +8,18 @@ namespace TicketManager.Models.Emails
     public class EmailSender
     {
         public Ticket Ticket { get; private set; }
+        public string EmailReceiver { get; private set; }
 
-        public EmailSender(Ticket ticket)
+        public EmailSender(Ticket ticket, string emailReceiver)
         {
             Ticket = ticket;
+            EmailReceiver = emailReceiver;
         }
 
         //try yandex instead
         public async Task SendEmailAsync()
         {
-            string email = Ticket.User.Email;
+            string email = EmailReceiver;
             string subject = "Ticked Reservation";
             string message = $"We want to remind that you reserved a ticket. The even will be at {Ticket.Concert.Location.Name}. " +
                 $"The date of the event is {Ticket.Concert.Date.ToString("dd.MM.yyyy HH.mm")} and your ticket number is {Ticket.Concert}";
