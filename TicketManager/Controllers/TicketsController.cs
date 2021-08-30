@@ -248,30 +248,12 @@ namespace TicketManager.Controllers
             ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Name", ticket.ConcertId);
             ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "UserName", ticket.UserId);
             return View(ticket);
-
-            //List<Ticket> toAdd = new();
-            //if (ModelState.IsValid)
-            //{
-            //    toAdd.Add(ticket);
-            //    toAdd.Add(ticket);
-            //    toAdd.Add(ticket);
-            //    toAdd.Add(ticket);
-            //    toAdd.Add(ticket);
-
-            //    await _context.AddRangeAsync(toAdd);
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["ConcertId"] = new SelectList(_context.Concerts, "Id", "Name", ticket.ConcertId);
-            //ViewData["UserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "UserName", ticket.UserId);
-            //return View(toAdd);
         }
 
         [Authorize(Roles = "Administrator")]
-        //[Route("/{Controller}/ConcertType/{type?}/Singer/{singer?}/")]
-        public IActionResult CreateMany(int? amount)
+        public IActionResult CreateMany()
         {
-            var concerts = _context.Concerts.Include(c => c.Location).Include(c => c.Singer).Where(c => c.Date >= DateTime.Now).OrderBy(c => c.Date);
+            var concerts = _context.Concerts.Include(c => c.Location).Include(c => c.Singer).Where(c => c.Date >= DateTime.Now).OrderBy(c => c.Discriminator).ThenBy(c => c.Singer);
             ViewData["ConcertId"] = new SelectList(concerts, "Id", "Name");
             return View();
         }
@@ -279,10 +261,27 @@ namespace TicketManager.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> CreateMany([Bind("Id,ConcertId,IsReserved,UserId")] Ticket ticket, int amount)
+        public async Task<IActionResult> CreateMany([Bind("Id,ConcertId,IsReserved,UserId,Amount")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                List<Ticket> tickets = new();
+                for (int i = 0; i < ticket.Amount; i++)
+                {
+                    tickets.Add(ticket);
+                }
+                //var concert = await _context.Concerts
+                //    .Include(c => c.Tickets)
+                //    .FirstOrDefaultAsync(c => c.Id == ticket.ConcertId);
+                //foreach (var t in tickets)
+                //{
+                //    concert.Tickets.Add(t);
+                //}
+
+                //for (int i = 0; i < ticket.Amount; i++)
+                //    _context.Add(ticket);
+                _context.AddRange(tickets);
+
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

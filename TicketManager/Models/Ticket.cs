@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManager.Models
 {
@@ -13,5 +14,8 @@ namespace TicketManager.Models
         public bool IsReserved { get; set; }
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
+
+        [NotMapped]
+        public int Amount { get; set; }
     }
 }
